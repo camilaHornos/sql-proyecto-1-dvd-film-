@@ -1,0 +1,28 @@
+-- analisis de peliculas :
+  --cuantas peliculas tiene cada categoria :
+  SELECT  c.name,count(*) FROM  category c 
+JOIN film_category fc ON c.category_id = fc.category_id
+GROUP by c.name;
+  --cual es el promedio de duracion de las peliculas, pelicula que mas dura y que menos dura 
+SELECT  avg(length) AS avg_length_film,  MAX(length) AS max_length, MIN(length) AS min_length
+FROM film;
+  --cuantas peliculas hay en cada idioma ?
+SELECT l.name, COUNT(fi.film_id) AS film_count
+FROM language l
+LEFT JOIN film fi ON l.language_id = fi.language_id 
+GROUP BY l.name;
+--Analisis de clientes 
+--cuantos clientes tiene la base de datos 
+--SELECT  count(*) AS total_customers FROM customer
+ --promedio de alquiler por cliente 
+
+
+/*  SELECT  avg(coun_ren)  AS avg_customer 
+from(SELECT customer_id,count(*) AS coun_ren from rental
+GROUP by  customer_id )
+as avg_rentals_customer 
+*/
+--cliente mas activo en el alquiler de dvd 
+SELECT customer_id AS customer_active, count(*) AS ren_coun from rental
+GROUP by customer_id
+ORDER by ren_coun DESC

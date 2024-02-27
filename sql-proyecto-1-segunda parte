@@ -1,0 +1,39 @@
+
+--¿Cuáles son las películas más alquiladas?
+SELECT 
+    f.title AS movie_title,
+    COUNT(*) AS num_rentals
+FROM 
+    rental r
+JOIN 
+    inventory i ON r.inventory_id = i.inventory_id
+JOIN 
+    film f ON i.film_id = f.film_id
+GROUP BY 
+    f.film_id,
+    f.title
+ORDER BY 
+    num_rentals DESC;
+	
+	--¿Cuál es la duración promedio de los alquileres?
+	/*En esta consulta, estamos restando la fecha de devolución (return_date) de la fecha de alquiler (rental_date) y luego calculando el promedio de esas diferencias. 
+	Dependiendo del sistema de gestión de bases de datos que estés utilizando, es posible que necesites ajustar la sintaxis para calcular la diferencia entre las fechas.*/
+SELECT AVG(CAST(return_date AS INTEGER) - CAST(rental_date AS INTEGER)) AS avg_rental_duration
+FROM rental;
+
+--Análisis financiero:
+--¿Cuál es el ingreso total generado por las películas?
+SELECT sum(amount) AS total_revenue FROM payment;
+
+--¿Cuál es el promedio de ingresos por cliente?
+SELECT 
+    AVG(total_amount) AS average_revenue_per_customer
+FROM (
+    SELECT 
+        customer_id,
+        SUM(amount) AS total_amount
+    FROM 
+        payment
+    GROUP BY 
+        customer_id
+) AS customer_revenue;
